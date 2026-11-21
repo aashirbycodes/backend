@@ -1,8 +1,11 @@
 import express from "express";
+import cors from "cors";
 const app =express()
 
 
 app.use(express.json())
+
+app.use(cors());
 
 let product =[
       {
@@ -30,6 +33,21 @@ let product =[
       }
       
  });
+ app.get("/product/:id", (req, res) => {
+  const found = product.find((p) => p && p.id === parseInt(req.params.id));
+  if (!found) {
+    return res.status(404).json({ message: "Product not found" });
+  }
+  res.status(200).json(found);
+});
+
+ app.get("/product/:id", (req, res) => {
+  const found = product.find((p) => p.id === parseInt(req.params.id));
+  if (!found) {
+    return res.status(404).json({ message: "Product not found" });
+  }
+  res.status(200).json(found);
+});
 
  //Create 
 
