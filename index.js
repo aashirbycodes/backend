@@ -50,6 +50,26 @@ app.get("/weather",(req,res)=>{
       })
 })
 
+app.delete("/product/:id",(req,res)=>{
+    const {id} = req.params;
+    product = product.filter((product)=> product.id !== parseInt(id))
+    res.status(204).send();
+});
+
+app.put("/product/:id",(req,res)=>{
+    const {id} = req.params;
+    const updatedProduct = req.body;
+    const index = product.findIndex((product)=> product.id === parseInt(id));
+    if(index !== -1){
+      product[index] = {...product[index], ...updatedProduct};
+      res.json(product[index]);
+    } else {
+            res.status(404).json({message:"Product not found"});
+    }
+    
+});
+
+
 //Port Assign
 
 app.listen(5050,()=>{
