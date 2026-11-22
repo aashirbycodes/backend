@@ -51,10 +51,13 @@ let product =[
 
  //Create 
 
-app.post("/product",(req,res)=>{
-    const newProduct = req.body;
-    product.push(newProduct);
-    res.status(201).json(newProduct);
+app.post("/product", (req, res) => {
+  const newProduct = req.body;
+  if (!newProduct || !newProduct.id || !newProduct.name) {
+    return res.status(400).json({ message: "Invalid product" });
+  }
+  product.push(newProduct);
+  res.status(201).json(newProduct);
 });
 
 app.get("/",(req,res)=>{
