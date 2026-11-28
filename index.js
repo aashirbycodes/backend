@@ -50,13 +50,19 @@ app.get("/product", async (req, res) => {
   }
 });
 
-app.post("/product", (req, res) => {
-  const newProduct = req.body;
-  product.push(newProduct);
-  res.status(201).json(newProduct);
+
+app.post("/product", async (req, res) => {
+  try {
+    const newProductFields = req.body;
+    const newProduct = new Product(newProductFields);
+    await newProduct.save();
+    res.status(201).json(newProduct);
+  } catch (error) {
+    res.status(500).json({ message: "Error creating Product", error: error});
+  }
 });
 
-app.delete("/product/:id", (req, res) => {
+app.delete("/product/:id", async (req, res) => {
   const { id } = req.params;
   product = product.filter((product) => product.id !== parseInt(id));
   res.status(204).send();
